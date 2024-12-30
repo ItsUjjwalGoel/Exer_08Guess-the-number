@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+    }
+
+    .form {
+        background-color: rgb(255, 233, 192);
+
+        width: 500px;
+        margin: auto;
+        padding: 100px;
+        padding-top: 30px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .w {
+        text-align: center;
+        padding-bottom: 20px;
+        font-size: 25px;
+    }
+
+    .input {
+        font-size: 17px;
+    }
+
+    input {
+        background-color: rgb(255, 198, 198);
+        height: 20px;
+        border: 1px solid rgb(234, 163, 163);
+        border-radius: 12px;
+        padding-left: 10px;
+    }
+
+    .instruction {
+        font-size: 17px;
+        padding-top: 5px;
+        height: 20px;
+        text-align: center;
+    }
+
+    .display {
+        height: 20px;
+        padding-top: 5px;
+        text-align: center;
+    }
+
+    button {
+        height: 35px;
+        text-align: center;
+        width: 100px;
+        border: 2px solid rgb(255, 212, 132);
+        background-color: rgb(182, 160, 105);
+        border-radius: 12px;
+        align-self: center;
+        margin-top: 10px;
+    }
+</style>
+
+<body>
+    <form class="form" action="">
+        <p class="w">Guess the number</p>
+        <p class="input">Enter Number: <label for=""><input type=""></label></p>
+        <p><button class="submit">submit</button> <button class="reset">reset</button></p>
+        <p class="instruction"></p>
+        <p class="display"></p>
+
+
+    </form>
+    <script>
+        let f = document.querySelector(".submit");
+        let re = document.querySelector(".reset");
+        let r = Math.round(Math.random() * 100);
+        console.log(r);
+        let n = 0;
+
+        f.addEventListener('click', (e) => {
+            e.preventDefault();
+
+
+            let i = parseInt(document.querySelector("input").value);
+
+
+            if (i === "" || isNaN(i)) {
+                document.querySelector(".instruction").innerHTML = `Please enter a valid number.`;
+            } else {
+                if (i < r) {
+                    document.querySelector(".display").innerHTML = `Too low. ${9 - n} turns left.`;
+                } else if (i > r) {
+                    document.querySelector(".display").innerHTML = `Too high. ${9 - n} turns left.`;
+                } else {
+                    document.querySelector(".display").innerHTML = `Correct! The number was ${r}.`;
+                    return;
+                }
+                n++;
+                if (n >= 10) {
+                    document.querySelector(".display").innerHTML = `Game over! The number was ${r}.`;
+                    document.querySelector(".instruction").innerHTML = "";
+                }
+            }
+            document.querySelector("input").value = "";
+        });
+        re.addEventListener('click', () => {
+            document.querySelector(".display").innerHTML = "";
+            document.querySelector(".instruction").innerHTML = "";
+            n = 0;
+        })
+
+
+
+    </script>
+</body>
+
+</html>
