@@ -11,12 +11,46 @@
         margin: 0;
         padding: 0;
         font-family: sans-serif;
+        overflow-y: hidden;
+        overflow-x: hidden;
     }
 
-    .form {
-        background-color: rgb(255, 233, 192);
+    body {
+        height: 100vh;
+        width: 100vw;
+        background-color: #000000b3;
+    }
 
-        width: 500px;
+    img {
+        object-fit: cover;
+        height: 100vh;
+        width: 100vw;
+    }
+
+    .image {
+        position: absolute;
+        top: 0;
+        height: 100vh;
+        width: 100vw;
+
+    }
+
+    .mainbox {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        height: 100vh;
+        width: 100vw;
+        flex-wrap: wrap;
+        position: absolute;
+        top: 0;
+
+    }
+
+
+    .form {
+        background-color: rgb(255 233 192 / 37%);
+        border-radius: 20px;
         margin: auto;
         padding: 100px;
         padding-top: 30px;
@@ -31,12 +65,17 @@
     }
 
     .input {
-        font-size: 17px;
+    
+        margin-top: 41px;
+        padding-right: 180px;
+        margin-bottom: 41px;
+        font-size: 18px;
     }
+    
 
     input {
-        background-color: rgb(255, 198, 198);
-        height: 20px;
+        background-color: rgb(251 202 255 / 24%);
+        height: 26px;
         border: 1px solid rgb(234, 163, 163);
         border-radius: 12px;
         padding-left: 10px;
@@ -53,6 +92,18 @@
         height: 20px;
         padding-top: 5px;
         text-align: center;
+        justify-content: center;
+        align-content: center;
+        flex-wrap: wrap;
+    }
+
+    .group {
+        display: flex;
+        height: 75px;
+        align-content: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
     }
 
     button {
@@ -60,65 +111,114 @@
         text-align: center;
         width: 100px;
         border: 2px solid rgb(255, 212, 132);
-        background-color: rgb(182, 160, 105);
+        background-color: rgb(229 243 255 / 41%);
         border-radius: 12px;
         align-self: center;
         margin-top: 10px;
+        
+
+    }
+
+    .score {
+        margin-top: 10px;
+        display: flex;
+        height: 30px;
+        justify-content: center;
+        align-content: center;
+        flex-wrap: wrap;
+        width: 100px;
+        border: 2px solid rgb(255 202 107);
+        border-radius: 12px;
+        align-self: center;
     }
 </style>
 
 <body>
-    <form class="form" action="">
-        <p class="w">Guess the number</p>
-        <p class="input">Enter Number: <label for=""><input type=""></label></p>
-        <p><button class="submit">submit</button> <button class="reset">reset</button></p>
-        <p class="instruction"></p>
-        <p class="display"></p>
+    <div class="image"><img src="1.jpeg" width="full" height="full" alt=""></div>
+    <div class="mainbox">
+
+        <form class="form" action="">
+            <p class="w">Guess The Number</p>
+            <p class="input">Enter Number: <label for=""><input type=""></label></p>
+            <div class="group">
+                <button class="submit ">submit</button>
+                <button class="New-Game ">New Game</button>
+                <button class="Reset">Reset</button>
+
+            </div>
+            <div class="score-display score"></div>
+            <p class="instruction"></p>
+            <p class="display"></p>
 
 
-    </form>
-    <script>
-        let f = document.querySelector(".submit");
-        let re = document.querySelector(".reset");
-        let r = Math.round(Math.random() * 100);
-        console.log(r);
-        let n = 0;
+        </form>
+        <script>
+            let f = document.querySelector(".submit");
+            let ng = document.querySelector(".New-Game");
+            let re = document.querySelector(".Reset");
+            let r = Math.round(Math.random() * 100);
+            let score = 0;
+            console.log(r);
+            let n = 0;
+            document.querySelector(".score-display").innerHTML = `score is ${score}`;
+            f.addEventListener('click', (e) => {
+                e.preventDefault();
 
-        f.addEventListener('click', (e) => {
-            e.preventDefault();
+
+                let i = parseInt(document.querySelector("input").value);
 
 
-            let i = parseInt(document.querySelector("input").value);
-
-
-            if (i === "" || isNaN(i)) {
-                document.querySelector(".instruction").innerHTML = `Please enter a valid number.`;
-            } else {
-                if (i < r) {
-                    document.querySelector(".display").innerHTML = `Too low. ${9 - n} turns left.`;
-                } else if (i > r) {
-                    document.querySelector(".display").innerHTML = `Too high. ${9 - n} turns left.`;
+                if (i === "" || isNaN(i)) {
+                    document.querySelector(".instruction").innerHTML = `Please enter a valid number.`;
                 } else {
-                    document.querySelector(".display").innerHTML = `Correct! The number was ${r}.`;
-                    return;
+                    if (i < r) {
+                        document.querySelector(".display").innerHTML = `Too low. ${9 - n} turns left.`;
+                        document.querySelector(".score-display").innerHTML = `score is ${score}`;
+                    } else if (i > r) {
+                        document.querySelector(".display").innerHTML = `Too high. ${9 - n} turns left.`;
+                        document.querySelector(".score-display").innerHTML = `score is ${score}`;
+                    } else {
+                        document.querySelector(".display").innerHTML = `Correct! The number was ${r}.`;
+                        score = score + 1;
+                        document.querySelector(".score-display").innerHTML = `score is ${score}`;
+                        return;
+                    }
+                    n++;
+                    if (n >= 10) {
+                        document.querySelector(".display").innerHTML = `Game over! The number was ${r}.`;
+                        document.querySelector(".instruction").innerHTML = "";
+                        document.querySelector(".score-display").innerHTML = `score is ${score}`;
+
+                    }
                 }
-                n++;
-                if (n >= 10) {
-                    document.querySelector(".display").innerHTML = `Game over! The number was ${r}.`;
-                    document.querySelector(".instruction").innerHTML = "";
-                }
-            }
-            document.querySelector("input").value = "";
-        });
-        re.addEventListener('click', () => {
-            document.querySelector(".display").innerHTML = "";
-            document.querySelector(".instruction").innerHTML = "";
-            n = 0;
-        })
+                document.querySelector("input").value = "";
+            });
+            ng.addEventListener("click", (e) => {
+                e.preventDefault();
+                r = Math.round(Math.random() * 100);
+                n = 0;
+                document.querySelector(".display").innerHTML = "";
+                document.querySelector(".instruction").innerHTML = "";
+                document.querySelector("input").value = "";
+                document.querySelector(".score-display").innerHTML = `score is ${score}`; // Preserve the score
+                console.log("New random number:", r);
+
+            });
+
+            re.addEventListener("click", () => {
+                score = 0; // Reset score here
+                n = 0;
+                r = Math.round(Math.random() * 100);
+                document.querySelector(".display").innerHTML = "";
+                document.querySelector(".instruction").innerHTML = "";
+                document.querySelector(".score-display").innerHTML = `score is ${score}`; // Reset the score display
+                console.log("Game reset. New random number:", r);
+            });
 
 
 
-    </script>
+        </script>
+    </div>
 </body>
 
 </html>
