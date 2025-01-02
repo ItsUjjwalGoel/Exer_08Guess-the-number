@@ -61,17 +61,17 @@
     .w {
         text-align: center;
         padding-bottom: 20px;
-        font-size: 25px;
+        font-size: 19px;
     }
 
     .input {
-    
+
         margin-top: 41px;
         padding-right: 180px;
         margin-bottom: 41px;
-        font-size: 18px;
+        font-size: 16px;
     }
-    
+
 
     input {
         background-color: rgb(251 202 255 / 24%);
@@ -111,12 +111,9 @@
         text-align: center;
         width: 100px;
         border: 2px solid rgb(255, 212, 132);
-        background-color: rgb(229 243 255 / 41%);
+        background-color: rgb(255 233 192 / 27%);
         border-radius: 12px;
         align-self: center;
-        margin-top: 10px;
-        
-
     }
 
     .score {
@@ -131,9 +128,139 @@
         border-radius: 12px;
         align-self: center;
     }
+
+    header {
+        position: absolute;
+        top: 0;
+        height: 60px;
+        background-color: rgb(255 233 192 / 37%);
+        width: 100vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        z-index: 1;
+    }
+
+    .logos {
+        width: 2rem;
+        height: 2rem;
+        border: 1px solid;
+        border-radius: 50%;
+    }
+
+    .home {
+        margin-left: 3rem;
+        background-color: white;
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+        border: 2px solid rgb(255, 212, 132);
+        border-radius: 0.5rem;
+        left: 0;
+        position: absolute;
+    }
+
+    .homecontainer {
+        border-radius: 0.5rem;
+        position: absolute;
+        right: 6rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+    }
+
+    .label {
+        font-size: 25px;
+    }
+
+    .time {
+        height: 35px;
+        justify-content: center;
+        width: 35px;
+        border: 2px solid rgb(255, 212, 132);
+        background-color: rgb(255 233 192 / 27%);
+        border-radius: 50%;
+        align-content: center;
+        display: flex;
+        flex-wrap: wrap;
+
+    }
+    .Label{
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        color: rgb(8, 1, 1);
+    }
+
+    @media screen and (max-width: 600px) {
+        .form {
+            padding: 15px;
+        }
+
+        .w {
+            font-size: 1.2rem;
+        }
+
+        .label {
+            font-size: small;
+
+        }
+
+        button {
+            font-size: 0.9rem;
+            height: 35px;
+        }
+
+        .score {
+            height: 30px;
+            font-size: 0.9rem;
+        }
+
+        body label {
+            font-size: 1.2rem;
+        }
+
+        .home {
+            padding-left: 0.2rem;
+            padding-right: 0.2rem;
+            margin: 1rem;
+
+        }
+
+        .logos {
+            width: 2rem;
+            height: 2rem;
+            border: 1px solid;
+            border-radius: 50%;
+
+        }
+
+        .homecontainer {
+            border-radius: 0.5rem;
+            position: absolute;
+            right: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.1rem;
+        }
+    }
 </style>
 
 <body>
+    <header>
+        <button class="home"> Home</button>
+
+        <div class="homecontainer">
+
+            <a href=" https://github.com/ItsUjjwalGoel" target='blank'><img src='.\Githublogo.png' alt=""
+                    class="logos" /></a>
+            <a href=" https://linkedin.com/in/its-ujjwal" target='blank'><img src='.\Linkedin.png' alt=""
+                    class="logos" /></a>
+
+        </div>
+        <label htmlFor="" class="label">Guess The Number</label>
+    </header>
     <div class="image"><img src="1.jpeg" width="full" height="full" alt=""></div>
     <div class="mainbox">
 
@@ -144,7 +271,7 @@
                 <button class="submit ">submit</button>
                 <button class="New-Game ">New Game</button>
                 <button class="Reset">Reset</button>
-
+                <label for="" class="time"></label>
             </div>
             <div class="score-display score"></div>
             <p class="instruction"></p>
@@ -152,18 +279,41 @@
 
 
         </form>
+       
         <script>
+            let timeleft = 30;
+            let timerInterval;
             let f = document.querySelector(".submit");
+            let h = document.querySelector(".home");
             let ng = document.querySelector(".New-Game");
             let re = document.querySelector(".Reset");
             let r = Math.round(Math.random() * 100);
             let score = 0;
             console.log(r);
             let n = 0;
+            document.querySelector(".time").textContent = timeleft;
+            function startTimer() {
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                }
+
+                timeleft = 30;
+
+                document.querySelector(".time").textContent = timeleft;
+                timerInterval = setInterval(() => {
+                    timeleft--;
+                    document.querySelector(".time").textContent = timeleft;
+                    if (timeleft <= 0) {
+                        clearInterval(timerInterval);
+                        document.querySelector(".display").innerHTML = `Correct! The number was ${r}.`;
+                        document.querySelector(".score-display").innerHTML = `score is ${score}`;
+                        document.querySelector(".instruction").innerHTML = "";
+                    }
+                }, 1000);
+            }
             document.querySelector(".score-display").innerHTML = `score is ${score}`;
             f.addEventListener('click', (e) => {
                 e.preventDefault();
-
 
                 let i = parseInt(document.querySelector("input").value);
 
@@ -180,20 +330,30 @@
                     } else {
                         document.querySelector(".display").innerHTML = `Correct! The number was ${r}.`;
                         score = score + 1;
+                        clearInterval(timerInterval);
                         document.querySelector(".score-display").innerHTML = `score is ${score}`;
+                        r = Math.round(Math.random() * 100);
+                        console.log("Game reset. New random number:", r);
+                        document.querySelector("input").value = "";
+                        document.querySelector(".instruction").innerHTML = "Click on New Game or Reset Button";
+                        n = 0;
                         return;
+
                     }
                     n++;
                     if (n >= 10) {
                         document.querySelector(".display").innerHTML = `Game over! The number was ${r}.`;
                         document.querySelector(".instruction").innerHTML = "";
                         document.querySelector(".score-display").innerHTML = `score is ${score}`;
-
+                        document.querySelector("time").textContent = "";
+                        clearInterval(timerInterval);
                     }
                 }
                 document.querySelector("input").value = "";
+
             });
             ng.addEventListener("click", (e) => {
+                startTimer()
                 e.preventDefault();
                 r = Math.round(Math.random() * 100);
                 n = 0;
@@ -213,12 +373,24 @@
                 document.querySelector(".instruction").innerHTML = "";
                 document.querySelector(".score-display").innerHTML = `score is ${score}`; // Reset the score display
                 console.log("Game reset. New random number:", r);
+                startTimer();
             });
-
+            h.addEventListener("click", () => {
+                score = 0;
+                n = 0;
+                r = Math.round(Math.random() * 100);
+                document.querySelector(".display").innerHTML = "";
+                document.querySelector(".instruction").innerHTML = "";
+                document.querySelector(".score-display").innerHTML = `score is ${score}`; // Reset the score display
+                console.log("Game reset. New random number:", r);
+                startTimer();
+            });
+            startTimer();
 
 
         </script>
     </div>
+    <label for="" class="Label">Made by Ujjwal</label>
 </body>
 
 </html>
