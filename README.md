@@ -39,6 +39,14 @@
 ## File Structure
 - **index.html**: The main HTML file containing the game structure.The CSS for styling the responsive game interface. The JavaScript containing the game logic and timer functionality.
 
+## Video
+- Here is video showcasing project.
+
+
+https://github.com/user-attachments/assets/f6961659-af50-4755-b38f-05cfae966c15
+
+
+
 ## Future Enhancements
 - Add difficulty levels (e.g., easy, medium, hard with different ranges).
 - Add animations or sound effects.
